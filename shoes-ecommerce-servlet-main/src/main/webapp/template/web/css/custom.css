@@ -1,0 +1,12 @@
+.bg-danger {
+    background: rgb(230,97,7) !important;
+    background: linear-gradient(90deg, rgba(230,97,7,1) 35%, rgba(249,255,0,1) 100%) !important;
+}
+.bg-success {
+    background: rgb(7,230,78) !important;
+    background: linear-gradient(90deg, rgba(7,230,78,1) 35%, rgba(0,255,236,1) 100%) !important;
+}
+.no-pointer-events {
+    pointer-events: none;
+    opacity: .7;
+}
