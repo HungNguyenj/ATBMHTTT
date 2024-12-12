@@ -1,13 +1,14 @@
-package com.ltweb_servlet_ecommerce.model;
+package com.ltweb_servlet_ecommerce.service.impl;
+
+import com.ltweb_servlet_ecommerce.service.IDSService;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.*;
 import java.util.Base64;
 
-public class DS {
+public class DSService implements IDSService {
     KeyPair keyPair;
     SecureRandom secureRandom;
     Signature signature;
@@ -15,10 +16,10 @@ public class DS {
     PublicKey publicKey;
     PrivateKey privateKey;
 
-    public DS() {
+    public DSService() {
     }
 
-    public DS(String alg, String algRandom, String prov) throws NoSuchAlgorithmException, NoSuchProviderException {
+    public DSService(String alg, String algRandom, String prov) throws NoSuchAlgorithmException, NoSuchProviderException {
         KeyPairGenerator generator = KeyPairGenerator.getInstance(alg, prov);
         secureRandom = SecureRandom.getInstance(algRandom, prov);
         generator.initialize(1024, secureRandom);
@@ -40,6 +41,8 @@ public class DS {
     public void loadPrivate(PrivateKey key) {
         this.privateKey = key;
     }
+
+
 
     public String sign(String mes) throws InvalidKeyException, SignatureException {
         byte[] data = mes.getBytes();
@@ -90,7 +93,7 @@ public class DS {
     }
 
     public static void main(String[] args) throws NoSuchAlgorithmException, NoSuchProviderException, SignatureException, InvalidKeyException, IOException {
-        DS ds = new DS("DSA", "SHA1PRNG", "SUN");
+        IDSService ds = new DSService("DSA", "SHA1PRNG", "SUN");
         ds.genKey();
         String sign = ds.sign("Xin chao");
         System.out.println(sign);
