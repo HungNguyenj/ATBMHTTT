@@ -15,5 +15,6 @@ public interface IDSService {
     public String signFile(String src) throws InvalidKeyException, SignatureException, IOException;
     public boolean verify(String mes, String sign) throws InvalidKeyException, SignatureException;
     public boolean verifyFile(String src, String sign) throws InvalidKeyException, IOException, SignatureException;
-
+    public PublicKey getPublicKey();
+    public PrivateKey getPrivateKey();
 }
