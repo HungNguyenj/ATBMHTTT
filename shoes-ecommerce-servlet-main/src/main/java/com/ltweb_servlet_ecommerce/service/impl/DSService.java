@@ -16,7 +16,8 @@ public class DSService implements IDSService {
     PublicKey publicKey;
     PrivateKey privateKey;
 
-    public DSService() {
+    public DSService() throws NoSuchAlgorithmException, NoSuchProviderException {
+        this("DSA", "SHA1PRNG", "SUN");
     }
 
     public DSService(String alg, String algRandom, String prov) throws NoSuchAlgorithmException, NoSuchProviderException {
@@ -42,7 +43,13 @@ public class DSService implements IDSService {
         this.privateKey = key;
     }
 
+    public PublicKey getPublicKey() {
+        return publicKey;
+    }
 
+    public PrivateKey getPrivateKey() {
+        return privateKey;
+    }
 
     public String sign(String mes) throws InvalidKeyException, SignatureException {
         byte[] data = mes.getBytes();

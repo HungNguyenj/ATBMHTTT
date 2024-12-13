@@ -34,11 +34,40 @@
                 <div class="form-group mt-3">
                     <button type="submit" class="btn btn-success btn-lg float-right">Ký</button>
                 </div>
-                <div class="form-group">
-                    <label for="signature">Chữ ký của bạn</label>
-                    <input type="text" class="form-control" id="signature" name="mysignature" readonly>
-                </div>
+
             </form>
+
+            <div class="form-group">
+                <label for="signature">Chữ ký của bạn</label>
+                <input
+                        type="text"
+                        class="form-control"
+                        id="signature"
+                        name="mysignature"
+                        readonly
+                    <% if (request.getAttribute("sign") != null && !request.getAttribute("sign").toString().isEmpty()) { %>
+                        value="<%= request.getAttribute("sign") %>"
+                    <% } %>
+                >
+
+            </div>
+            <div class="form-group">
+                <label for="signature">Public key của bạn</label>
+                <input
+                        type="text"
+                        class="form-control"
+                        id="publickey"
+                        name="publickey"
+                        readonly
+                    <% if (request.getAttribute("publickey") != null && !request.getAttribute("publickey").toString().isEmpty()) { %>
+                        value="<%= request.getAttribute("publickey") %>"
+                    <% } %>
+                >
+
+            </div>
+
+
+
             <a href="/verify-ds" class="text-body">Xác minh chữ ký</a>
 <%--            <button type="submit" class="btn btn-success btn-lg float-right">Private key</button>--%>
 <%--            <button type="submit" class="btn btn-success btn-lg float-right">Public key</button>--%>

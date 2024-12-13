@@ -30,17 +30,30 @@
             <p style="margin: 5px 0px; color: #fc1616"> <%= error%> </p>
         </div>
         <div class="card-body">
-            <form class="form" role="form" autocomplete="off" method="post" action="/digital-signature">
+            <form class="form" role="form" autocomplete="off" method="post" action="/verify-ds">
                 <div class="form-group">
                     <label for="signature">Chữ ký của bạn</label>
                     <input type="text" class="form-control" id="signature" name="mysignature">
                 </div>
-<%--                <div class="form-group">--%>
-<%--                    <label for="signature">Chữ ký của bạn</label>--%>
-<%--                    <input type="text" class="form-control" id="signature" name="mysignature">--%>
-<%--                </div>--%>
+                <div class="form-group">
+                    <label for="publickey">Public key của bạn</label>
+                    <input type="text" class="form-control" id="publickey" name="mypublickey">
+                </div>
                 <div class="form-group mt-3">
                     <button type="submit" class="btn btn-success btn-lg float-right">Xác minh</button>
+                </div>
+                <div class="form-group">
+                    <label for="verifymessage">Xác nhận chữ ký</label>
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="verifymessage"
+                            name="verifymessage"
+                            readonly
+                        <% if (request.getAttribute("verifymessage") != null && !request.getAttribute("verifymessage").toString().isEmpty()) { %>
+                            value="<%= request.getAttribute("verifymessage") %>"
+                        <% } %>
+                    >
                 </div>
             </form>
             <a href="/digital-signature" class="text-body">Tạo chữ ký</a>
