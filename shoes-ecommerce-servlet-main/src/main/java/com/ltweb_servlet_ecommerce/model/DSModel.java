@@ -10,8 +10,9 @@ import java.security.PublicKey;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DSModel {
-    private String privateKey;
-    private String publicKey;
+public class DSModel extends AbstractModel<DSModel>{
+    private Long user_id;
+    private String private_key;
+    private String public_key;
     private String sign;
 }

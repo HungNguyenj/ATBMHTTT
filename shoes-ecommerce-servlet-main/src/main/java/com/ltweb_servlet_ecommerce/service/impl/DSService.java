@@ -1,11 +1,20 @@
 package com.ltweb_servlet_ecommerce.service.impl;
 
+import com.ltweb_servlet_ecommerce.dao.IDSDAO;
+import com.ltweb_servlet_ecommerce.dao.impl.DSDAO;
+import com.ltweb_servlet_ecommerce.model.DSModel;
+import com.ltweb_servlet_ecommerce.model.ProductModel;
+import com.ltweb_servlet_ecommerce.model.RoleModel;
+import com.ltweb_servlet_ecommerce.model.UserModel;
 import com.ltweb_servlet_ecommerce.service.IDSService;
 
+import javax.inject.Inject;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.*;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Base64;
 
 public class DSService implements IDSService {
@@ -15,6 +24,9 @@ public class DSService implements IDSService {
 
     PublicKey publicKey;
     PrivateKey privateKey;
+
+    @Inject
+    IDSDAO dsDAO;
 
     public DSService() throws NoSuchAlgorithmException, NoSuchProviderException {
         this("DSA", "SHA1PRNG", "SUN");
@@ -99,15 +111,58 @@ public class DSService implements IDSService {
         return signature.verify(signValue);
     }
 
-    public static void main(String[] args) throws NoSuchAlgorithmException, NoSuchProviderException, SignatureException, InvalidKeyException, IOException {
-        IDSService ds = new DSService("DSA", "SHA1PRNG", "SUN");
-        ds.genKey();
-        String sign = ds.sign("Xin chao");
-        System.out.println(sign);
-        System.out.println("Kiem tra chu ky" + (ds.verify("Xin chao", sign)?"":" KHONG") + " hop le");
 
-//        String signf = ds.signFile("D:\\ATBMHTTT\\lab4.rar");
-//        System.out.println(signf);
-//        System.out.println("Kiem tra chu ky" + (ds.verifyFile("D:\\ATBMHTTT\\lab4-1.rar", signf)?"":" KHONG") + " hop le");
+    @Override
+    public DSModel save(DSModel model) throws SQLException {
+        if (dsDAO == null) {
+            dsDAO = new DSDAO();
+        }
+        System.out.println("This is save in service");
+        Long ds = dsDAO.save(model);
+        return findById(ds);
     }
+
+    @Override
+    public DSModel update(DSModel model) throws SQLException {
+        if (dsDAO == null) {
+            dsDAO = new DSDAO();
+        }
+        DSModel oldModel = dsDAO.findById(model.getId());
+        if (oldModel == null) {
+            return null;
+        }
+        model.setUpdateAt(new Timestamp(System.currentTimeMillis()));
+        dsDAO.update(model);
+        DSModel newModel = findById(model.getId());
+        return newModel;
+    }
+
+    @Override
+    public DSModel delete(Long id) throws SQLException {
+        if (dsDAO == null) {
+            dsDAO = new DSDAO();
+        }
+        DSModel oldModel = findById(id);
+        dsDAO.delete(id);
+        return oldModel;
+    }
+
+    @Override
+    public DSModel findWithFilter(DSModel model) throws SQLException {
+        if (dsDAO == null) {
+            dsDAO = new DSDAO();
+        }
+        DSModel user = dsDAO.findWithFilter(model);
+        return user;
+    }
+
+    @Override
+    public DSModel findById(Long id) throws SQLException {
+        if (dsDAO == null) {
+            dsDAO = new DSDAO();
+        }
+        DSModel user = dsDAO.findById(id);
+        return user;
+    }
+
 }
