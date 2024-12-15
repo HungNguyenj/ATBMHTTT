@@ -32,22 +32,27 @@ public class VerifyDSController extends HttpServlet {
         //Verify
         String signature = req.getParameter("mysignature");
         String publicKeyStr = req.getParameter("mypublickey");
-        String email = "testemail@gmail.com";
+        String email = req.getParameter("myemail");
 
-        boolean isVerified = false;
+        if (signature.isEmpty() || publicKeyStr.isEmpty() || email.isEmpty()) {
+            resp.sendRedirect(req.getContextPath() + "/verify-ds?message=field_is_blank&toast=danger");
+        } else {
+            boolean isVerified = false;
 
-        try {
-            PublicKey publicKey = KeyUtil.base64ToPublicKey(publicKeyStr);
+            try {
+                PublicKey publicKey = KeyUtil.base64ToPublicKey(publicKeyStr);
 
-            dsService.loadPublic(publicKey);
-             isVerified = dsService.verify(email, signature);
+                dsService.loadPublic(publicKey);
+                isVerified = dsService.verify(email, signature);
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            String verificationResult = isVerified ? "Chữ ký hợp lệ" : "Chữ ký không hợp lệ";
+            req.setAttribute("verifymessage", verificationResult);
+            req.getRequestDispatcher("/views/shared//verify-ds.jsp").forward(req, resp);
         }
 
-        String verificationResult = isVerified ? "Chữ ký hợp lệ" : "Chữ ký không hợp lệ";
-        req.setAttribute("verifymessage", verificationResult);
-        req.getRequestDispatcher("/views/shared//verify-ds.jsp").forward(req, resp);
     }
 }

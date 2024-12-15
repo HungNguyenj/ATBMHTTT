@@ -55,13 +55,23 @@ public class DSController extends HttpServlet {
                 String privatekey = KeyUtil.getInstance().privateKeyToBase64(dsService.getPrivateKey());
 
                 DSModel dsModel = new DSModel();
+                dsModel.setUser_id(userModel.getId());
+
+                DSModel tempModel = dsService.findWithFilter(dsModel);
+                DSModel temp;
+
                 dsModel.setSign(sign);
                 dsModel.setPublic_key(publickey);
                 dsModel.setPrivate_key(privatekey);
-                dsModel.setUser_id(userModel.getId());
-                dsService.save(dsModel);
 
-                System.out.println(dsModel.toString());
+                if (tempModel == null) {
+                    temp = dsService.save(dsModel);
+                } else {
+                    dsModel.setId(tempModel.getId());
+                    temp = dsService.update(dsModel);
+                }
+
+                System.out.println(temp.toString());
 
                 req.setAttribute("sign", sign);
                 req.setAttribute("publickey",publickey);
