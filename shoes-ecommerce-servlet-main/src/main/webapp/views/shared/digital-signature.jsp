@@ -38,15 +38,15 @@
             </form>
 
             <div class="form-group">
-                <label for="signature">Chữ ký của bạn</label>
+                <label for="signature">Private key của bạn</label>
                 <input
                         type="text"
                         class="form-control"
                         id="signature"
                         name="mysignature"
                         readonly
-                    <% if (request.getAttribute("sign") != null && !request.getAttribute("sign").toString().isEmpty()) { %>
-                        value="<%= request.getAttribute("sign") %>"
+                    <% if (request.getAttribute("privatekey") != null && !request.getAttribute("privatekey").toString().isEmpty()) { %>
+                        value="<%= request.getAttribute("privatekey") %>"
                     <% } %>
                 >
 
@@ -68,7 +68,9 @@
 
 
 
-            <a href="/verify-ds" class="text-body">Xác minh chữ ký</a>
+            <div><a href="/verify-ds" class="text-body">Xác minh chữ ký</a></div>
+            <div><a href="/load-ds" class="text-body">Tải lên khóa</a></div>
+
 <%--            <button type="submit" class="btn btn-success btn-lg float-right">Private key</button>--%>
 <%--            <button type="submit" class="btn btn-success btn-lg float-right">Public key</button>--%>
         </div>

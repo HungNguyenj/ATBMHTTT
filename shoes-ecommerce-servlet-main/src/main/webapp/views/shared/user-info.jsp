@@ -1,4 +1,5 @@
 <%@ page import="com.ltweb_servlet_ecommerce.model.UserModel" %>
+<%@ page import="com.ltweb_servlet_ecommerce.model.DSModel" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp" %>
 <!DOCTYPE html>
@@ -19,6 +20,12 @@
 <body>
 
 <%UserModel userModel = (UserModel) request.getAttribute("userModel");%>
+<%DSModel dsModel = (DSModel) request.getAttribute("dsModel");
+    if (dsModel == null) {
+        dsModel = new DSModel();
+        dsModel.setPrivate_key("");
+        dsModel.setPublic_key("");
+    }%>
 <div class="container col-md-4" id="account-user">
     <div class="main-account">
         <div class="main-account-header" style="margin-top: 100px;">
@@ -53,17 +60,35 @@
                     </div>
 
 <%--                    <div class="form-group">--%>
-<%--                        <label for="infoaddress" class="form-label">Địa chỉ</label>--%>
-<%--                        <input class="form-control" type="text" name="address" id="infoaddress"--%>
-<%--                               value="">--%>
+<%--                        <label for="infoname" class="form-label">Chữ ký điện tử</label>--%>
+<%--                        <input class="form-control" type="text" name="digitalsignature" id="sign" readonly--%>
+<%--                               value="<%=dsModel.getSign() %>">--%>
 <%--                    </div>--%>
+
+                    <div class="form-group">
+                        <label for="infoname" class="form-label">Public key</label>
+                        <input class="form-control" type="text" name="publickey" id="publickey" readonly
+                               value="<%=dsModel.getPublic_key()%>">
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="infoname" class="form-label">Private key</label>
+                        <input class="form-control" type="text" name="privatekey" id="privatekey" readonly
+                               value="<%=dsModel.getPrivate_key()%>">
+                    </div>
+
                 </div>
                 <div class="main-account-body-row mt-3">
                     <div>
                         <button id="save-info-user" class="btn btn-primary" type="submit"></i> Lưu thay đổi</button>
                     </div>
                 </div>
+                <div>
                 <a href="/change-password" style="margin-top: 30px">Đổi mật khẩu</a>
+                </div>
+                <div><a href="/digital-signature" class="text-body">Tạo mới cặp khóa</a></div>
+                <div><a href="/verify-ds" class="text-body">Xác minh chữ ký</a></div>
             </div>
         </form>
 

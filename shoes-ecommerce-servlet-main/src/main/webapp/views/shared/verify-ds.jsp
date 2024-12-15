@@ -32,6 +32,10 @@
         <div class="card-body">
             <form class="form" role="form" autocomplete="off" method="post" action="/verify-ds">
                 <div class="form-group">
+                    <label for="signature">Nội dung của bạn</label>
+                    <input type="email" class="form-control" id="email" name="myemail">
+                </div>
+                <div class="form-group">
                     <label for="signature">Chữ ký của bạn</label>
                     <input type="text" class="form-control" id="signature" name="mysignature">
                 </div>
@@ -56,7 +60,8 @@
                     >
                 </div>
             </form>
-            <a href="/digital-signature" class="text-body">Tạo chữ ký</a>
+            <div><a href="/digital-signature" class="text-body">Tạo mới khóa</a></div>
+            <div><a href="/load-ds" class="text-body">Tải lên khóa</a></div>
 <%--            <button type="submit" class="btn btn-success btn-lg float-right">Private key</button>--%>
 <%--            <button type="submit" class="btn btn-success btn-lg float-right">Public key</button>--%>
         </div>

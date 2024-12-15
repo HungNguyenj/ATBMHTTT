@@ -1,6 +1,8 @@
 package com.ltweb_servlet_ecommerce.controller.web.shared;
 
+import com.ltweb_servlet_ecommerce.model.DSModel;
 import com.ltweb_servlet_ecommerce.model.UserModel;
+import com.ltweb_servlet_ecommerce.service.IDSService;
 import com.ltweb_servlet_ecommerce.service.IUserService;
 import com.ltweb_servlet_ecommerce.utils.NotifyUtil;
 import com.ltweb_servlet_ecommerce.utils.SessionUtil;
@@ -20,15 +22,26 @@ import java.util.List;
 public class UserInfoController extends HttpServlet {
     @Inject
     private IUserService userService;
+    @Inject
+    private IDSService dsService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         NotifyUtil.setUp(req);
         UserModel userModel = (UserModel) SessionUtil.getValue(req, "USER_MODEL");
         if (userModel != null) {
-            req.setAttribute("userModel", userModel);
-            RequestDispatcher rd = req.getRequestDispatcher("/views/shared/user-info.jsp");
-            rd.forward(req, resp);
+            try {
+                DSModel temp = new DSModel();
+                temp.setUser_id(userModel.getId());
+                DSModel tempModel = dsService.findWithFilter(temp);
+
+                req.setAttribute("userModel", userModel);
+                req.setAttribute("dsModel", tempModel);
+                RequestDispatcher rd = req.getRequestDispatcher("/views/shared/user-info.jsp");
+                rd.forward(req, resp);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         } else {
             resp.sendRedirect(req.getContextPath() + "/sign-in");
         }
