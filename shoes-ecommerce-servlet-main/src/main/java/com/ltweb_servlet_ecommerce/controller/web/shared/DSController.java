@@ -49,7 +49,6 @@ public class DSController extends HttpServlet {
                 String email = userModel.getEmail();
 
                 dsService.genKey();
-                String sign = dsService.sign(email);
 
                 String publickey = KeyUtil.getInstance().publicKeyToBase64(dsService.getPublicKey());
                 String privatekey = KeyUtil.getInstance().privateKeyToBase64(dsService.getPrivateKey());
@@ -60,7 +59,6 @@ public class DSController extends HttpServlet {
                 DSModel tempModel = dsService.findWithFilter(dsModel);
                 DSModel temp;
 
-                dsModel.setSign(sign);
                 dsModel.setPublic_key(publickey);
                 dsModel.setPrivate_key(privatekey);
 
@@ -73,15 +71,11 @@ public class DSController extends HttpServlet {
 
                 System.out.println(temp.toString());
 
-                req.setAttribute("sign", sign);
+                req.setAttribute("privatekey", privatekey);
                 req.setAttribute("publickey",publickey);
 
                 req.getRequestDispatcher("/views/shared/digital-signature.jsp").forward(req, resp);
 
-            } catch (InvalidKeyException e) {
-                throw new RuntimeException(e);
-            } catch (SignatureException e) {
-                throw new RuntimeException(e);
             } catch (NoSuchAlgorithmException e) {
                 throw new RuntimeException(e);
             } catch (NoSuchProviderException e) {
