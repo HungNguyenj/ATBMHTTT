@@ -34,7 +34,7 @@
         <div class="row">
 
                 <div class="col-lg-6 pe-lg-4 mb-5 mb-lg-0">
-                    <form method="POST" id="formCheckout">
+                    <form method="POST" id="formCheckout" action="/checkout">
                         <h5 class="mb-4">Thông tin của bạn</h5>
                         <div class="row">
                             <div class="col-md-6">

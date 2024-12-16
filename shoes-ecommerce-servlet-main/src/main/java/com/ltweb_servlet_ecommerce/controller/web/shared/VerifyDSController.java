@@ -32,9 +32,10 @@ public class VerifyDSController extends HttpServlet {
         //Verify
         String signature = req.getParameter("mysignature");
         String publicKeyStr = req.getParameter("mypublickey");
-        String email = req.getParameter("myemail");
+        String slug = req.getParameter("slug");
+        String email = req.getParameter("email");
 
-        if (signature.isEmpty() || publicKeyStr.isEmpty() || email.isEmpty()) {
+        if (signature.isEmpty() || publicKeyStr.isEmpty() || slug.isEmpty() || email.isEmpty()) {
             resp.sendRedirect(req.getContextPath() + "/verify-ds?message=field_is_blank&toast=danger");
         } else {
             boolean isVerified = false;
@@ -43,7 +44,9 @@ public class VerifyDSController extends HttpServlet {
                 PublicKey publicKey = KeyUtil.base64ToPublicKey(publicKeyStr);
 
                 dsService.loadPublic(publicKey);
-                isVerified = dsService.verify(email, signature);
+
+                String mes = email + slug;
+                isVerified = dsService.verify(mes, signature);
 
             } catch (Exception e) {
                 e.printStackTrace();

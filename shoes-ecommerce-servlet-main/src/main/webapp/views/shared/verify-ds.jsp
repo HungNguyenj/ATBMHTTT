@@ -32,12 +32,16 @@
         <div class="card-body">
             <form class="form" role="form" autocomplete="off" method="post" action="/verify-ds">
                 <div class="form-group">
-                    <label for="signature">Nội dung của bạn</label>
-                    <input type="email" class="form-control" id="email" name="myemail">
+                    <label for="slug">Mã đơn hàng của bạn</label>
+                    <input type="text" class="form-control" id="slug" name="slug">
                 </div>
                 <div class="form-group">
-                    <label for="signature">Chữ ký của bạn</label>
+                    <label for="signature">Chữ ký của mã đơn hàng</label>
                     <input type="text" class="form-control" id="signature" name="mysignature">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email của bạn</label>
+                    <input type="email" class="form-control" id="email" name="email">
                 </div>
                 <div class="form-group">
                     <label for="publickey">Public key của bạn</label>
