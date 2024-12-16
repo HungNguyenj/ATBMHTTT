@@ -55,6 +55,7 @@ public class CheckoutController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+
             NotifyUtil.setUp(req);
             List<ProductModel> productModelList = new ArrayList<>();
             if (StringUtils.isNotBlank(req.getParameter("productId")) && StringUtils.isNotBlank(req.getParameter("quantity")) && StringUtils.isNotBlank(req.getParameter("sizeId"))) {
@@ -186,7 +187,13 @@ public class CheckoutController extends HttpServlet {
                 orderDetailsService.save(orderDetailsModel);
                 cartService.deleteByUserId(((UserModel) SessionUtil.getValue(req, SystemConstant.USER_MODEL)).getId());
             }
+
+
+
             String voucherApply = req.getParameter("voucherApply");
+            if (voucherApply == null) {
+                voucherApply = "";
+            }
             if (!voucherApply.isBlank()) {
                 VoucherModel voucher = voucherService.findById(Long.parseLong(voucherApply));
                 if (!voucher.getEndDate().after(new Timestamp(System.currentTimeMillis()))) {
@@ -214,6 +221,7 @@ public class CheckoutController extends HttpServlet {
             order.setSlug(slugEncodedFromId);
 
             order = orderService.update(order);
+
             if (user != null) {
                 //Save user order
                 UserOrderModel userOrderModel = new UserOrderModel();
@@ -221,7 +229,12 @@ public class CheckoutController extends HttpServlet {
                 userOrderModel.setUserId(user.getId());
                 userOrderService.save(userOrderModel);
             }
-            resp.sendRedirect("/success-order/" + order.getSlug());
+
+            //redirect to sign page
+            req.setAttribute("order", order);
+            req.getRequestDispatcher("/views/shared/sign-into-order.jsp").forward(req, resp);
+
+//            resp.sendRedirect("/success-order/" + order.getSlug());
         } catch (Exception e) {
             resp.sendRedirect("/checkout?message=error&toast=danger");
         }

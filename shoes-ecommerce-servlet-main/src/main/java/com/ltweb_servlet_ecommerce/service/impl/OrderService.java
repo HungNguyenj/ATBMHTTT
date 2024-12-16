@@ -90,6 +90,9 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<OrderModel> findByUserId(Long id) {
+        if (orderDAO == null) {
+            orderDAO = new OrderDAO();
+        }
         return orderDAO.findByUserId(id);
     }
 
