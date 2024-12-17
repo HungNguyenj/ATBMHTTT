@@ -12,6 +12,7 @@ public class OrderModel extends  AbstractModel<OrderModel>{
     private String slug;
     private boolean isPaid;
     private String sign;
+    private boolean ischanged;
 //    Info render
     private List<ProductModel> listProduct;
     private AddressModel addressModel;
