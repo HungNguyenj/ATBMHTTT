@@ -59,12 +59,6 @@
                                value="<%=userModel.getBirthDay()%>">
                     </div>
 
-<%--                    <div class="form-group">--%>
-<%--                        <label for="infoname" class="form-label">Chữ ký điện tử</label>--%>
-<%--                        <input class="form-control" type="text" name="digitalsignature" id="sign" readonly--%>
-<%--                               value="<%=dsModel.getSign() %>">--%>
-<%--                    </div>--%>
-
                     <div class="form-group">
                         <label for="infoname" class="form-label">Public key</label>
                         <input class="form-control" type="text" name="publickey" id="publickey" readonly
@@ -91,6 +85,18 @@
                 <div><a href="/verify-ds" class="text-body">Xác minh chữ ký</a></div>
             </div>
         </form>
+
+        <!-- Form tạo file và tải về -->
+        <form action="/download-keys" method="post">
+            <div class="form-group mt-4">
+                <input class="form-control" type="hidden" name="savepublickey" id="savepublickey" readonly
+                       value="<%=dsModel.getPublic_key()%>">
+                <input class="form-control" type="hidden" name="saveprivatekey" id="saveprivatekey" readonly
+                       value="<%=dsModel.getPrivate_key()%>">
+                <button type="submit" class="btn btn-success">Tải xuống khóa (Public & Private)</button>
+            </div>
+        </form>
+
 
     </div>
 </div>
