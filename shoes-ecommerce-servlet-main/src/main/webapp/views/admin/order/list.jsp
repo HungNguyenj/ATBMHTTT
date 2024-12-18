@@ -43,6 +43,9 @@
                                 Ghi chú
                             </th>
                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                Mã đơn
+                            </th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                 Đơn hàng bị thay đổi
                             </th>
                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -120,6 +123,11 @@
                                                 Không có ghi chú
                                             </c:if>
                                         </p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        <p class="text-xs font-weight-bold mx-auto mb-0">${order_item.slug}</p>
                                     </div>
                                 </td>
                                 <td>

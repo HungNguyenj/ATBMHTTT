@@ -38,6 +38,8 @@ public class OrderDetailController extends HttpServlet {
     IProductSizeService productSizeService;
     @Inject
     ISizeService sizeService;
+    @Inject
+    IOrderChangedService orderChangedService;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -92,6 +94,12 @@ public class OrderDetailController extends HttpServlet {
             OrderModel order = validateAndGetOrder(orderId, status);
             updateOrderDetails(order, listProduct);
             updateOrderStatus(order, status);
+
+            //send mail to user
+            System.out.println("sendmail");
+            UserModel userModel = new UserModel();
+            userModel.setEmail("nghungg2053@gmail.com");
+            orderChangedService.orderBeingChanged(new UserModel(), order);
 
             response.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {

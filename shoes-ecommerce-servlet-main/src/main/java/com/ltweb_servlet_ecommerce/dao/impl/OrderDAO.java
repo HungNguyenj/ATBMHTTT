@@ -115,7 +115,7 @@ public class OrderDAO extends AbstractDAO<OrderModel> implements IOrderDAO {
 
     @Override
     public List<OrderModel> findByUserId(Long id) {
-        String sql = "SELECT slug, uo.createAt,STATUS,totalAmount, orders.sign, orders.ischanged FROM user_orders uo INNER JOIN orders ON uo.orderId = orders.id WHERE uo.userId = ? ORDER BY uo.createAt DESC";
+        String sql = "SELECT slug, uo.createAt,STATUS,totalAmount, orders.sign, orders.ischanged, orders.isDeleted FROM user_orders uo INNER JOIN orders ON uo.orderId = orders.id WHERE uo.userId = ? ORDER BY uo.createAt DESC";
         List<Object> params = new ArrayList<>();
         params.add(id);
         List<OrderModel> result = query(sql, new OrderMapper(), params, OrderModel.class);
