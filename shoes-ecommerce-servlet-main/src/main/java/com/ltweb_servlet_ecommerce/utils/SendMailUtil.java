@@ -1002,14 +1002,15 @@ public class SendMailUtil {
         String subject = "Thông báo: Lượng Truy Cập Lớn Bất Thường";
         sendMail(toMail, subject, content.toString());
     }
-    public static void templateWarningOrderChanged(String username,String slug, String toMail, String typeChanged) {
+    public static void templateWarningOrderChanged(String username, String slug, String toMail, String typeChanged) {
         StringBuilder content = new StringBuilder();
-        content.append("<p><strong>Xin chào").append(username).append(",</strong></p>");
-        content.append("<p>Đơn hàng với mã <strong>").append(slug).append("</strong> đã bị").append(typeChanged).append(". Vui lòng kiểm tra lại để đảm bảo tính chính xác.</p>");
+        content.append("<p><strong>Xin chào ").append(username).append(",</strong></p>");
+        content.append("<p>Đơn hàng với mã <strong>").append(slug).append("</strong> của bạn đã bị ").append(typeChanged).append(". Vui lòng kiểm tra lại để đảm bảo tính chính xác.</p>");
         content.append("<p>Trân trọng.</p>");
-        String subject = "Thông báo: Đơn hàng bị" + typeChanged;
+        String subject = "Thông báo: Đơn hàng bị " + typeChanged;
         sendMail(toMail, subject, content.toString());
     }
+
 
 
 }

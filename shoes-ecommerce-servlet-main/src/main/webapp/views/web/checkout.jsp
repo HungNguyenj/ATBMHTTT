@@ -313,15 +313,15 @@
         const listInfoAddress = [
             {
                 typeAddress : "province",
-                url : () => "https://vapi.vnappmob.com/api/province/"
+                url : () => "https://vapi.vnappmob.com/api/v2/province/"
             },
             {
                 typeAddress : "district",
-                url : (idProvince) => "https://vapi.vnappmob.com/api/province/district/"+idProvince
+                url : (idProvince) => "https://vapi.vnappmob.com/api/v2/province/district/"+idProvince
             },
             {
                 typeAddress : "ward",
-                url : (idDistrict) => "https://vapi.vnappmob.com/api/province/ward/"+idDistrict
+                url : (idDistrict) => "https://vapi.vnappmob.com/api/v2/province/ward/"+idDistrict
             },
             {
                 typeAddress: "hamlet1",

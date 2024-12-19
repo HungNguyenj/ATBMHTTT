@@ -1,10 +1,7 @@
 package com.ltweb_servlet_ecommerce.controller.admin.order;
 
 import com.google.gson.JsonParser;
-import com.ltweb_servlet_ecommerce.model.AddressModel;
-import com.ltweb_servlet_ecommerce.model.OrderDetailsModel;
-import com.ltweb_servlet_ecommerce.model.OrderModel;
-import com.ltweb_servlet_ecommerce.model.ProductModel;
+import com.ltweb_servlet_ecommerce.model.*;
 import com.ltweb_servlet_ecommerce.paging.Pageble;
 import com.ltweb_servlet_ecommerce.service.*;
 import com.ltweb_servlet_ecommerce.utils.CartUtil;
@@ -36,6 +33,12 @@ public class OrderListController extends HttpServlet {
     IProductSizeService productSizeService;
     @Inject
     ISizeService sizeService;
+    @Inject
+    IUserService userService;
+    @Inject
+    IUserOrderService userOrderService;
+    @Inject
+    IOrderChangedService orderChangedService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -74,6 +77,17 @@ public class OrderListController extends HttpServlet {
         try {
             long id = parser.parse(request.getReader()).getAsLong();
             boolean isDeleted = orderService.softDelete(id);
+
+            //send mail to user
+            OrderModel order = orderService.findById(id);
+            UserOrderModel tempuo = new UserOrderModel();
+            tempuo.setOrderId(id);
+            UserOrderModel userOrderModel = userOrderService.findWithFilter(tempuo);
+            UserModel userModel = userService.findById(userOrderModel.getUserId());
+
+            System.out.println("send mail");
+            orderChangedService.orderBeingDeleted(userModel, order);
+
             response.setStatus(isDeleted ? HttpServletResponse.SC_NO_CONTENT : HttpServletResponse.SC_BAD_REQUEST);
         } catch (Exception e) {
             e.printStackTrace();

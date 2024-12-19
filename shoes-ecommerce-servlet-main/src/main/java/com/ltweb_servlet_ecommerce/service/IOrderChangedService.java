@@ -5,6 +5,7 @@ import com.ltweb_servlet_ecommerce.model.UserModel;
 
 public interface IOrderChangedService {
     public void orderBeingDeleted(UserModel userModel, OrderModel orderModel);
+    public void orderBeingCanceled(UserModel userModel, OrderModel orderModel);
     public void orderBeingChanged(UserModel userModel, OrderModel orderModel);
     public void orderBeingChangeStatus(UserModel userModel, OrderModel orderModel);
 }

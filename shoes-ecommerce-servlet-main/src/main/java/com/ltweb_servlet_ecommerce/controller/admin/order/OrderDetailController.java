@@ -40,6 +40,10 @@ public class OrderDetailController extends HttpServlet {
     ISizeService sizeService;
     @Inject
     IOrderChangedService orderChangedService;
+    @Inject
+    IUserOrderService userOrderService;
+    @Inject
+    IUserService userService;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -96,10 +100,14 @@ public class OrderDetailController extends HttpServlet {
             updateOrderStatus(order, status);
 
             //send mail to user
-            System.out.println("sendmail");
-            UserModel userModel = new UserModel();
-            userModel.setEmail("nghungg2053@gmail.com");
-            orderChangedService.orderBeingChanged(new UserModel(), order);
+            UserOrderModel tempuo = new UserOrderModel();
+            tempuo.setOrderId(order.getId());
+            UserOrderModel userOrderModel = userOrderService.findWithFilter(tempuo);
+            UserModel userModel = userService.findById(userOrderModel.getUserId());
+
+            orderChangedService.orderBeingChanged(userModel, order);
+            order.setIschanged(true);
+            orderService.update(order);
 
             response.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
@@ -173,12 +181,24 @@ public class OrderDetailController extends HttpServlet {
                     // Soft delete the order details (set isDeleted to true)
                     boolean isDeleted = orderDetailsService.softDelete(orderId, productSizeId);
 
+                    //send mail to user
+                    OrderModel order = orderService.findById(orderId);
+                    UserOrderModel tempuo = new UserOrderModel();
+                    tempuo.setOrderId(orderId);
+                    UserOrderModel userOrderModel = userOrderService.findWithFilter(tempuo);
+                    UserModel userModel = userService.findById(userOrderModel.getUserId());
+
+                    System.out.println("send mail");
+                    orderChangedService.orderBeingDeleted(userModel, order);
+
                     response.setStatus(isDeleted ? HttpServletResponse.SC_NO_CONTENT : HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 }
             }
         } catch (ClassCastException e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }
