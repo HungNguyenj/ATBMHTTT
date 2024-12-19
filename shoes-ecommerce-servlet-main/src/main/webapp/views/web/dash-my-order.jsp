@@ -36,6 +36,7 @@
                             <tbody>
 
                             <c:forEach var="order" items="${requestScope.orders}">
+                                <c:if test="${not order.isDeleted}">
                                 <tr>
                                     <td class="text-center">${order.slug}</td>
                                     <td class="text-center">
@@ -70,6 +71,7 @@
                                         </div>
                                     </td>
                                 </tr>
+                                </c:if>
                             </c:forEach>
                             </tbody>
                         </table>

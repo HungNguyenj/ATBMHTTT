@@ -86,6 +86,8 @@ public class OrderController extends HttpServlet {
                 // Update the current order in the order list
                 listOrder.set(i, orderModel);
             }
+
+
             req.setAttribute("orders", listOrder);
             RequestDispatcher rd = req.getRequestDispatcher("/views/web/dash-my-order.jsp");
             rd.forward(req, resp);
