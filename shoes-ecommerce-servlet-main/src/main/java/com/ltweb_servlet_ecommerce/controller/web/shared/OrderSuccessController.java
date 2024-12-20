@@ -24,19 +24,19 @@ public class OrderSuccessController extends HttpServlet {
         NotifyUtil.setUp(req);
         String orderSlug = UrlUtil.getIdFromUrl(req, resp);
         req.setAttribute("orderSlug",orderSlug);
-        OrderModel order = new OrderModel();
-        order.setSlug(orderSlug);
-        try {
-            order = orderService.findWithFilter(order);
-            if (order!=null) {
+//        OrderModel tempOrder = new OrderModel();
+//        tempOrder.setSlug(orderSlug);
+//        try {
+//            OrderModel orderModel = orderService.findWithFilter(tempOrder);
+//            if (orderModel!=null) {
                 RequestDispatcher rd = req.getRequestDispatcher("/views/web/order-success.jsp");
                 rd.forward(req, resp);
-            } else {
-                resp.sendRedirect("/error/404");
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+//            } else {
+//                resp.sendRedirect("/error/404");
+//            }
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
 
 
     }

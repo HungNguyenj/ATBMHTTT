@@ -106,8 +106,6 @@ public class OrderDetailController extends HttpServlet {
             UserModel userModel = userService.findById(userOrderModel.getUserId());
 
             orderChangedService.orderBeingChanged(userModel, order);
-            order.setIschanged(true);
-            orderService.update(order);
 
             response.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {

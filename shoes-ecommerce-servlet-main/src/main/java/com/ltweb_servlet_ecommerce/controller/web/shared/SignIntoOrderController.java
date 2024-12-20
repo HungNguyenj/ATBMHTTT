@@ -39,6 +39,8 @@ public class SignIntoOrderController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        boolean handleSign = Boolean.parseBoolean(req.getParameter("handlesign"));
+
         String slug = req.getParameter("slug");
         String privatekeyStr = req.getParameter("privatekey");
         String publickeyStr = req.getParameter("publickey");
@@ -48,36 +50,41 @@ public class SignIntoOrderController extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/sign-in");
         } else {
             try {
-                dsService = new DSService();
-                email = userModel.getEmail();
+                //find orders
+                OrderModel tempOrder = new OrderModel();
+                tempOrder.setSlug(slug);
+                OrderModel orderModel = orderService.findWithFilter(tempOrder);
 
-                DSModel temp = new DSModel();
-                temp.setUser_id(userModel.getId());
-                DSModel dsModel = dsService.findWithFilter(temp);
+                if (handleSign) {
+                    dsService = new DSService();
+                    email = userModel.getEmail();
 
-                if (dsModel.getPublic_key().equals(publickeyStr)
-                    && dsModel.getPrivate_key().equals(privatekeyStr)) {
-                    PublicKey publicKey = KeyUtil.getInstance().base64ToPublicKey(publickeyStr);
-                    PrivateKey privateKey = KeyUtil.getInstance().base64ToPrivateKey(privatekeyStr);
+                    DSModel temp = new DSModel();
+                    temp.setUser_id(userModel.getId());
+                    DSModel dsModel = dsService.findWithFilter(temp);
 
-                    String signContent = email + slug;
+                    if (dsModel.getPublic_key().equals(publickeyStr)
+                            && dsModel.getPrivate_key().equals(privatekeyStr)) {
+                        PublicKey publicKey = KeyUtil.getInstance().base64ToPublicKey(publickeyStr);
+                        PrivateKey privateKey = KeyUtil.getInstance().base64ToPrivateKey(privatekeyStr);
 
-                    dsService.loadPublic(publicKey);
-                    dsService.loadPrivate(privateKey);
+                        String signContent = email + slug;
 
-                    String sign = dsService.sign(signContent);
+                        dsService.loadPublic(publicKey);
+                        dsService.loadPrivate(privateKey);
 
-                    //find orders
-                    OrderModel tempOrder = new OrderModel();
-                    tempOrder.setSlug(slug);
-                    OrderModel orderModel = orderService.findWithFilter(tempOrder);
+                        String sign = dsService.sign(signContent);
 
-                    orderModel.setSign(sign);
-                    orderService.update(orderModel);
+                        orderModel.setSign(sign);
+                        orderModel.setVerified(true);
+                        orderModel = orderService.update(orderModel);
+                        Thread.sleep(1000);
 
+                        resp.sendRedirect("/success-order/" + orderModel.getSlug());
+                    }
+                } else {
                     resp.sendRedirect("/success-order/" + orderModel.getSlug());
                 }
-
 
             } catch (NoSuchAlgorithmException e) {
                 throw new RuntimeException(e);
