@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Login</title>
+    <title>User Info</title>
     <!-- Meta Tag -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,12 +20,12 @@
 <body>
 
 <%UserModel userModel = (UserModel) request.getAttribute("userModel");%>
-<%DSModel dsModel = (DSModel) request.getAttribute("dsModel");
-    if (dsModel == null) {
-        dsModel = new DSModel();
-        dsModel.setPrivate_key("");
-        dsModel.setPublic_key("");
-    }%>
+<%--<%DSModel dsModel = (DSModel) request.getAttribute("dsModel");--%>
+<%--    if (dsModel == null) {--%>
+<%--        dsModel = new DSModel();--%>
+<%--        dsModel.setPrivate_key("");--%>
+<%--        dsModel.setPublic_key("");--%>
+<%--    }%>--%>
 <div class="container col-md-4" id="account-user">
     <div class="main-account">
         <div class="main-account-header" style="margin-top: 100px;">
@@ -59,18 +59,18 @@
                                value="<%=userModel.getBirthDay()%>">
                     </div>
 
-                    <div class="form-group">
-                        <label for="infoname" class="form-label">Public key</label>
-                        <input class="form-control" type="text" name="publickey" id="publickey" readonly
-                               value="<%=dsModel.getPublic_key()%>">
+<%--                    <div class="form-group">--%>
+<%--                        <label for="publickey" class="form-label">Public key</label>--%>
+<%--                        <input class="form-control" type="text" name="publickey" id="publickey" readonly--%>
+<%--                               value="<%=dsModel.getPublic_key()%>">--%>
 
-                    </div>
+<%--                    </div>--%>
 
-                    <div class="form-group">
-                        <label for="infoname" class="form-label">Private key</label>
-                        <input class="form-control" type="text" name="privatekey" id="privatekey" readonly
-                               value="<%=dsModel.getPrivate_key()%>">
-                    </div>
+<%--                    <div class="form-group">--%>
+<%--                        <label for="privatekey" class="form-label">Private key</label>--%>
+<%--                        <input class="form-control" type="text" name="privatekey" id="privatekey" readonly--%>
+<%--                               value="<%=dsModel.getPrivate_key()%>">--%>
+<%--                    </div>--%>
 
                 </div>
                 <div class="main-account-body-row mt-3">
@@ -80,22 +80,28 @@
                 </div>
                 <div>
                 <a href="/change-password" style="margin-top: 30px">Đổi mật khẩu</a>
+                    <a href="/manage-key" style="margin-top: 30px">Manage Keys</a>
                 </div>
-                <div><a href="/digital-signature" class="text-body">Tạo mới cặp khóa</a></div>
-                <div><a href="/verify-ds" class="text-body">Xác minh chữ ký</a></div>
+<%--                <div><a href="/digital-signature" class="text-body">Tạo mới cặp khóa</a></div>--%>
+<%--                <div><a href="/verify-ds" class="text-body">Xác minh chữ ký</a></div>--%>
             </div>
         </form>
+        <div>
+            <button id="access-keys" class="btn btn-primary" type="button">
+                <a href="/manage-key" style="color: white; text-decoration: none;">Quản lý Key</a>
+            </button>
+        </div>
 
         <!-- Form tạo file và tải về -->
-        <form action="/download-keys" method="post">
-            <div class="form-group mt-4">
-                <input class="form-control" type="hidden" name="savepublickey" id="savepublickey" readonly
-                       value="<%=dsModel.getPublic_key()%>">
-                <input class="form-control" type="hidden" name="saveprivatekey" id="saveprivatekey" readonly
-                       value="<%=dsModel.getPrivate_key()%>">
-                <button type="submit" class="btn btn-success">Tải xuống khóa (Public & Private)</button>
-            </div>
-        </form>
+<%--        <form action="/download-keys" method="post">--%>
+<%--            <div class="form-group mt-4">--%>
+<%--                <input class="form-control" type="hidden" name="savepublickey" id="savepublickey" readonly--%>
+<%--                       value="<%=dsModel.getPublic_key()%>">--%>
+<%--                <input class="form-control" type="hidden" name="saveprivatekey" id="saveprivatekey" readonly--%>
+<%--                       value="<%=dsModel.getPrivate_key()%>">--%>
+<%--                <button type="submit" class="btn btn-success">Tải xuống khóa (Public & Private)</button>--%>
+<%--            </div>--%>
+<%--        </form>--%>
 
 
     </div>

@@ -22,26 +22,24 @@ import java.util.List;
 public class UserInfoController extends HttpServlet {
     @Inject
     private IUserService userService;
-    @Inject
-    private IDSService dsService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         NotifyUtil.setUp(req);
         UserModel userModel = (UserModel) SessionUtil.getValue(req, "USER_MODEL");
         if (userModel != null) {
-            try {
-                DSModel temp = new DSModel();
-                temp.setUser_id(userModel.getId());
-                DSModel tempModel = dsService.findWithFilter(temp);
+//            try {
+//                DSModel temp = new DSModel();
+//                temp.setUser_id(userModel.getId());
+//                DSModel tempModel = dsService.findWithFilter(temp);
 
                 req.setAttribute("userModel", userModel);
-                req.setAttribute("dsModel", tempModel);
+//                req.setAttribute("dsModel", tempModel);
                 RequestDispatcher rd = req.getRequestDispatcher("/views/shared/user-info.jsp");
                 rd.forward(req, resp);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+//            } catch (SQLException e) {
+//                throw new RuntimeException(e);
+//            }
         } else {
             resp.sendRedirect(req.getContextPath() + "/sign-in");
         }
