@@ -46,7 +46,7 @@
                                 Mã đơn
                             </th>
                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                Đơn hàng bị thay đổi
+                                Xác thức bằng chữ ký
                             </th>
                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                 Được tạo lúc
@@ -132,7 +132,7 @@
                                 </td>
                                 <td>
                                     <div class="d-flex">
-                                        <p class="text-xs font-weight-bold mx-auto mb-0">${order_item.ischanged}</p>
+                                        <p class="text-xs font-weight-bold mx-auto mb-0">${order_item.verified}</p>
                                     </div>
                                 </td>
                                 <!-- End Note -->

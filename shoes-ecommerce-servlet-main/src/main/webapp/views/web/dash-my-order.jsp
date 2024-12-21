@@ -28,8 +28,8 @@
                                 <th class="text-center">Thời gian</th>
                                 <th class="text-center">Trạng thái</th>
                                 <th class="text-center">Trị giá</th>
+                                <th class="text-center">Đã xác thực</th>
                                 <th class="text-center">Chữ ký</th>
-                                <th class="text-center">Bị thay đổi</th>
                                 <th class="text-center"></th>
                             </tr>
                             </thead>
@@ -63,8 +63,8 @@
                                             <span><fmt:formatNumber type="currency" value="${order.totalAmount}"/></span>
                                         </div>
                                     </td>
+                                    <td class="text-center">${order.verified}</td>
                                     <td class="text-center">${order.sign}</td>
-                                    <td class="text-center">${order.ischanged}</td>
                                     <td class="text-center">
                                         <div class="dash__link dash__link--brand">
                                             <a style="font-weight: 700; font-style: italic" href="<c:url value="/order-details/${order.slug}"/>">Chi tiết</a>

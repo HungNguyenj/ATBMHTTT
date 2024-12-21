@@ -59,23 +59,22 @@
             <form class="form" role="form" autocomplete="off" method="post" action="/sign-order">
                 <div class="form-group">
                     <label for="slug">Mã đơn của bạn</label>
-                    <input type="text" class="form-control" id="slug" name="slug" readonly
-                    value="<%=orderModel.getSlug()%>">
+                    <input type="text" class="form-control" id="slug" name="slug" readonly value="<%=orderModel.getSlug()%>">
                 </div>
                 <div class="form-group">
                     <label for="privatekey">Private key của bạn</label>
-                    <input type="text" class="form-control" id="privatekey" name="privatekey" readonly
-                           value="<%=dsModel.getPrivate_key()%>">
+                    <input type="text" class="form-control" id="privatekey" name="privatekey" readonly value="<%=dsModel.getPrivate_key()%>">
                 </div>
                 <div class="form-group">
                     <label for="publickey">Public key của bạn</label>
-                    <input type="text" class="form-control" id="publickey" name="publickey" readonly
-                           value="<%=dsModel.getPublic_key()%>">>
+                    <input type="text" class="form-control" id="publickey" name="publickey" readonly value="<%=dsModel.getPublic_key()%>">
                 </div>
                 <div class="form-group mt-3">
-                    <button type="submit" class="btn btn-success btn-lg float-right">Ký</button>
+                    <button type="submit" class="btn btn-success btn-lg float-right" name="handlesign" value="true">Ký</button>
+                    <button type="submit" class="btn btn-cancel btn-lg float-right" name="handlesign" value="false">Bỏ qua</button>
                 </div>
             </form>
+
         </div>
     </div>
 </div>

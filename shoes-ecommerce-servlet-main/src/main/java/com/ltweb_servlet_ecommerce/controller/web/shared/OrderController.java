@@ -52,7 +52,6 @@ public class OrderController extends HttpServlet {
             for (int i = 0; i < listOrder.size(); i++) {
                 // Get the current order
                 OrderModel orderModel = listOrder.get(i);
-                System.out.println(orderModel.toString());
 
                 // Find the address associated with the current order
                 AddressModel addressModel = addressService.findById(orderModel.getAddressId());
