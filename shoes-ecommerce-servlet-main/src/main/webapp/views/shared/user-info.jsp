@@ -78,15 +78,16 @@
                         <button id="save-info-user" class="btn btn-primary" type="submit"></i> Lưu thay đổi</button>
                     </div>
                 </div>
-                <div>
-                <a href="/change-password" style="margin-top: 30px">Đổi mật khẩu</a>
-                    <a href="/manage-key" style="margin-top: 30px">Manage Keys</a>
-                </div>
 <%--                <div><a href="/digital-signature" class="text-body">Tạo mới cặp khóa</a></div>--%>
 <%--                <div><a href="/verify-ds" class="text-body">Xác minh chữ ký</a></div>--%>
             </div>
         </form>
-        <div>
+        <div class="main-account-body-row mt-3">
+            <button id="changepass" class="btn btn-primary" type="button">
+                <a href="/change-password" style="color: white; text-decoration: none;">Đổi mật khẩu</a>
+            </button>
+        </div>
+        <div class="main-account-body-row mt-3">
             <button id="access-keys" class="btn btn-primary" type="button">
                 <a href="/manage-key" style="color: white; text-decoration: none;">Quản lý Key</a>
             </button>

@@ -20,12 +20,7 @@
 <body>
 
 <%UserModel userModel = (UserModel) request.getAttribute("userModel");%>
-<%DSModel dsModel = (DSModel) request.getAttribute("dsModel");
-    if (dsModel == null) {
-        dsModel = new DSModel();
-        dsModel.setPrivate_key("");
-        dsModel.setPublic_key("");
-    }%>
+<%DSModel dsModel = (DSModel) request.getAttribute("dsModel");%>
 <div class="container col-md-4" id="account-user">
     <div class="main-account">
         <div class="main-account-header" style="margin-top: 100px;">

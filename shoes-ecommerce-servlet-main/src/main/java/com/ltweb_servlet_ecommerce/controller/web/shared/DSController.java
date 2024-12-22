@@ -46,8 +46,6 @@ public class DSController extends HttpServlet {
 
                 dsService = new DSService();
 
-                String email = userModel.getEmail();
-
                 dsService.genKey();
 
                 String publickey = KeyUtil.getInstance().publicKeyToBase64(dsService.getPublicKey());
@@ -61,12 +59,15 @@ public class DSController extends HttpServlet {
 
                 dsModel.setPublic_key(publickey);
                 dsModel.setPrivate_key(privatekey);
+//                dsModel.setUsing(true);
 
                 if (tempModel == null) {
                     temp = dsService.save(dsModel);
                 } else {
-                    dsModel.setId(tempModel.getId());
-                    temp = dsService.update(dsModel);
+//                    tempModel.setUsing(false);
+                    dsService.update(tempModel);
+
+                    temp = dsService.save(dsModel);
                 }
 
                 System.out.println(temp.toString());
