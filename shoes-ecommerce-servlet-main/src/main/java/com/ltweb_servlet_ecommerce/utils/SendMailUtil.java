@@ -4,12 +4,18 @@ import com.ltweb_servlet_ecommerce.constant.SystemConstant;
 import com.ltweb_servlet_ecommerce.model.LogModel;
 import com.ltweb_servlet_ecommerce.model.OrderModel;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -61,6 +67,63 @@ public class SendMailUtil {
             }
         });
     }
+
+    public static void sendMailWithFile(String toEmailAddress, String titleMail, String templateMail, String signContent) {
+        executorService.submit(() -> {
+
+            ResourceBundle resourceBundle = ResourceBundle.getBundle("env");
+            String username = resourceBundle.getString("EMAIL_ADDRESS");
+            String password = resourceBundle.getString("EMAIL_PASSWORD");
+
+            Properties props = new Properties();
+            props.put("mail.smtp.host", "smtp.gmail.com");
+            props.put("mail.smtp.port", "587");
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.ssl.trust", "*");
+            props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+
+            javax.mail.Session sessionEmail = javax.mail.Session.getInstance(props, new Authenticator() {
+                protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+                    return new javax.mail.PasswordAuthentication(username, password);
+                }
+            });
+
+            try {
+                // Tạo email
+                MimeMessage message = new MimeMessage(sessionEmail);
+                message.addHeader("Content-type", "text/HTML; charset=UTF-8");
+                message.setFrom(new InternetAddress(username));
+                message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmailAddress));
+                message.setSubject(titleMail, "UTF-8");
+
+                // Phần nội dung chính (HTML)
+                MimeBodyPart contentBodyPart = new MimeBodyPart();
+                contentBodyPart.setContent(templateMail, "text/html;charset=UTF-8");
+
+                // Phần đính kèm (sign.txt)
+                MimeBodyPart attachmentBodyPart = new MimeBodyPart();
+                DataSource dataSource = new ByteArrayDataSource(signContent, "text/plain");
+                attachmentBodyPart.setDataHandler(new DataHandler(dataSource));
+                attachmentBodyPart.setFileName("sign.txt");
+
+                // Gộp nội dung và tệp đính kèm vào email
+                MimeMultipart multipart = new MimeMultipart();
+                multipart.addBodyPart(contentBodyPart);
+                multipart.addBodyPart(attachmentBodyPart);
+
+                message.setContent(multipart);
+
+                // Gửi email
+                Transport.send(message);
+            } catch (MessagingException ex) {
+                ex.printStackTrace();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
 
     public static String templateMailDanger(LogModel logModel) {
         StringBuilder content = new StringBuilder();
@@ -1009,6 +1072,21 @@ public class SendMailUtil {
         content.append("<p>Trân trọng.</p>");
         String subject = "Thông báo: Đơn hàng bị " + typeChanged;
         sendMail(toMail, subject, content.toString());
+    }
+
+    public static void templateConfirmOrder(String username, OrderModel orderModel, String toMail) {
+        StringBuilder content = new StringBuilder();
+        content.append("<p><strong>Xin chào ").append(username).append(",</strong></p>");
+        content.append("<p>Đơn hàng của bạn đã được xác nhận đặt thành công.</p>");
+        content.append("<p>Mã đơn hàng: <strong>").append(orderModel.getSlug()).append("</strong></p>");
+        content.append("<p>Giá tiền: <strong>").append(orderModel.getTotalAmount()).append(" VNĐ</strong></p>");
+        content.append("<p>Chữ ký: <strong>").append(orderModel.getSign()).append("</strong></p>");
+        content.append("<p>Cảm ơn bạn đã mua hàng tại Nai.</p>");
+        content.append("<p>Trân trọng.</p>");
+
+        String subject = "Xác nhận đặt hàng thành công - Mã đơn hàng " + orderModel.getSlug();
+        String signContent = orderModel.getSign(); // Lấy chữ ký từ OrderModel
+        sendMailWithFile(toMail, subject, content.toString(), signContent);
     }
 
 

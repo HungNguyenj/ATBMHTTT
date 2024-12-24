@@ -36,7 +36,7 @@
 
                             <li class="m-0"><a class="dropdown-item" href="/user-info">${USER_MODEL.fullName}</a></li>
                             <li><a class="dropdown-item" href="<c:url value="/orders"/> "><i class="far fa-check-circle me-2"></i>Đơn hàng</a></li>
-
+                            <li><a class="dropdown-item" href="<c:url value="/manage-key"/> "><i class="fa-solid fa-key me-2"></i>Quản lý Key</a></li>
                             <li><a class="dropdown-item" href="/sign-out"><i class="fa-solid fa-person-walking-dashed-line-arrow-right me-2"></i>Đăng xuất</a></li>
                         </c:if>
                         <c:if test="${empty USER_MODEL}">

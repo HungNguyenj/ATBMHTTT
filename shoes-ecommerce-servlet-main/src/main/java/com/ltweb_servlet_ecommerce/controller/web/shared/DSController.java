@@ -53,19 +53,20 @@ public class DSController extends HttpServlet {
 
                 DSModel dsModel = new DSModel();
                 dsModel.setUser_id(userModel.getId());
+                dsModel.setUsedNow(1);
 
                 DSModel tempModel = dsService.findWithFilter(dsModel);
                 DSModel temp;
 
                 dsModel.setPublic_key(publickey);
                 dsModel.setPrivate_key(privatekey);
-//                dsModel.setUsing(true);
 
                 if (tempModel == null) {
                     temp = dsService.save(dsModel);
                 } else {
-//                    tempModel.setUsing(false);
-                    dsService.update(tempModel);
+                    tempModel.setUsedNow(2);
+                    tempModel.setExpiredTime(tempModel.getExpiredTime());
+                    tempModel = dsService.update(tempModel);
 
                     temp = dsService.save(dsModel);
                 }
@@ -85,7 +86,5 @@ public class DSController extends HttpServlet {
                 throw new RuntimeException(e);
             }
         }
-
-
     }
 }

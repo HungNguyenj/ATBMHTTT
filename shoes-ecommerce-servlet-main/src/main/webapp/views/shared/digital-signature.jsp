@@ -32,7 +32,7 @@
         <div class="card-body">
             <form class="form" role="form" autocomplete="off" method="post" action="/digital-signature">
                 <div class="form-group mt-3">
-                    <button type="submit" class="btn btn-success btn-lg float-right">Ký</button>
+                    <button type="submit" class="btn btn-success btn-lg float-right">Tạo key</button>
                 </div>
 
             </form>

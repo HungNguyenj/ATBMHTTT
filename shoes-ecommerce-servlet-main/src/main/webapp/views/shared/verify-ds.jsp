@@ -30,23 +30,23 @@
             <p style="margin: 5px 0px; color: #fc1616"> <%= error%> </p>
         </div>
         <div class="card-body">
-            <form class="form" role="form" autocomplete="off" method="post" action="/verify-ds">
+            <form class="form" role="form" autocomplete="off" method="post" action="/verify-ds" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="slug">Mã đơn hàng của bạn</label>
                     <input type="text" class="form-control" id="slug" name="slug">
                 </div>
                 <div class="form-group">
-                    <label for="signature">Chữ ký của mã đơn hàng</label>
-                    <input type="text" class="form-control" id="signature" name="mysignature">
+                    <label for=file-sign class="form-label">Tải Chữ ký</label>
+                    <input class="form-control" type="file" name="signature" id="file-sign">
                 </div>
                 <div class="form-group">
-                    <label for="email">Email của bạn</label>
-                    <input type="email" class="form-control" id="email" name="email">
+                    <label for="file-publickey" class="form-label">Tải Public Key</label>
+                    <input class="form-control" type="file" name="file-publickey" id="file-publickey">
                 </div>
-                <div class="form-group">
-                    <label for="publickey">Public key của bạn</label>
-                    <input type="text" class="form-control" id="publickey" name="mypublickey">
-                </div>
+<%--                <div class="form-group">--%>
+<%--                    <label for="publickey">Public key của bạn</label>--%>
+<%--                    <input type="text" class="form-control" id="publickey" name="mypublickey">--%>
+<%--                </div>--%>
                 <div class="form-group mt-3">
                     <button type="submit" class="btn btn-success btn-lg float-right">Xác minh</button>
                 </div>

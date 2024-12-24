@@ -35,7 +35,7 @@ public class UserKeysController extends HttpServlet {
                 dsModel.setPublic_key("");
                 dsModel.setPrivate_key("");
                 for (DSModel ds : listDS) {
-                    if (ds.getUsed() == 1) {
+                    if (ds.getUsedNow() == 1) {
                         dsModel = ds;
                     }
                 }

@@ -13,6 +13,7 @@ public class OrderModel extends  AbstractModel<OrderModel>{
     private boolean isPaid;
     private String sign;
     private boolean verified;
+    private Long signByDSId;
 //    Info render
     private List<ProductModel> listProduct;
     private AddressModel addressModel;

@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,5 +14,8 @@ public class DSModel extends AbstractModel<DSModel>{
     private String private_key;
     private String public_key;
     private int expiredTime;
-    private int used;
+    private int usedNow;
+    private int isReported;
+    private Timestamp reportedAt;
+
 }

@@ -62,7 +62,7 @@
                 </div>
                 <div class="main-account-body-row mt-3">
                         <button id="report-keys" class="btn btn-danger" type="button">
-                            <a href="#" style="color: white; text-decoration: none;">Report</a>
+                            <a href="/report-key" style="color: white; text-decoration: none;">Báo cáo lộ Key</a>
                         </button>
                 </div>
 
@@ -74,9 +74,22 @@
             <div class="form-group mt-4">
                 <input class="form-control" type="hidden" name="savepublickey" id="savepublickey" readonly
                        value="<%=dsModel.getPublic_key()%>">
+                <input class="form-control" type="hidden" name="saveprivatekey" readonly
+                       value="<%=dsModel.getPrivate_key()%>">
+                <input class="form-control" type="hidden" name="typedownload" readonly
+                       value="publickey">
+                <button type="submit" class="btn btn-success">Tải xuống khóa Công khai (Public Key)</button>
+            </div>
+        </form>
+        <form action="/download-keys" method="post">
+            <div class="form-group mt-4">
+                <input class="form-control" type="hidden" name="savepublickey" readonly
+                       value="<%=dsModel.getPublic_key()%>">
                 <input class="form-control" type="hidden" name="saveprivatekey" id="saveprivatekey" readonly
                        value="<%=dsModel.getPrivate_key()%>">
-                <button type="submit" class="btn btn-success">Tải xuống khóa (Public & Private)</button>
+                <input class="form-control" type="hidden" name="typedownload" readonly
+                       value="privatekey">
+                <button type="submit" class="btn btn-success">Tải xuống khóa riêng tư (Private Key)</button>
             </div>
         </form>
 

@@ -163,8 +163,8 @@ public class DSService implements IDSService {
         if (dsDAO == null) {
             dsDAO = new DSDAO();
         }
-        DSModel user = dsDAO.findById(id);
-        return user;
+        DSModel ds = dsDAO.findById(id);
+        return ds;
     }
 
     @Override
@@ -176,17 +176,28 @@ public class DSService implements IDSService {
         return list;
     }
 
-//    public static void main(String[] args) throws SQLException {
-//        DSModel model = new DSModel();
+    public static void main(String[] args) throws SQLException, NoSuchAlgorithmException, NoSuchProviderException {
+        DSModel model = new DSModel();
+        IDSService dsService = new DSService();
+        IDSDAO dsdao = new DSDAO();
+
 //        model.setUser_id(21L);
-//        DSDAO dsDAO = new DSDAO();
-//        model = dsDAO.findWithFilter(model);
-//        System.out.println(model.toString());
+//        model.setUsedNow(1);
 //
-//        List<DSModel> list = dsDAO.findAllWithFilter(model,null);
+//        model = dsService.findWithFilter(model);
+        model = dsService.findById(23L);
+        System.out.println(model.toString());
+
+        model.setExpiredTime(20);
+        model.setIsReported(2);
+        model = dsService.update(model);
+        System.out.println(model.toString());
+
+//        List<DSModel> list = dsService.findAllWithFilter(model, null);
 //        for (DSModel ds : list) {
 //            System.out.println(ds.toString());
 //        }
-//    }
+
+    }
 
 }
