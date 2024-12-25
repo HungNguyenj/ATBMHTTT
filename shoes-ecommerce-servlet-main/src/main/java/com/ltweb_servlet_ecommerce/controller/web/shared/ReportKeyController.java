@@ -3,6 +3,7 @@ package com.ltweb_servlet_ecommerce.controller.web.shared;
 import com.ltweb_servlet_ecommerce.model.DSModel;
 import com.ltweb_servlet_ecommerce.model.UserModel;
 import com.ltweb_servlet_ecommerce.service.IDSService;
+import com.ltweb_servlet_ecommerce.service.IReportKeyService;
 import com.ltweb_servlet_ecommerce.utils.KeyUtil;
 import com.ltweb_servlet_ecommerce.utils.NotifyUtil;
 import com.ltweb_servlet_ecommerce.utils.SessionUtil;
@@ -36,6 +37,8 @@ import java.util.List;
 public class ReportKeyController extends HttpServlet {
     @Inject
     IDSService dsService;
+    @Inject
+    IReportKeyService reportKeyService;
 
 
     @Override
@@ -92,6 +95,7 @@ public class ReportKeyController extends HttpServlet {
                     temp.setUsedNow(2);
                 }
                 temp = dsService.update(temp);
+                reportKeyService.reportKey(temp, userModel);
                 System.out.println(temp);
 
                 resp.sendRedirect(req.getContextPath() + "/report-key?message=report_success&toast=success");

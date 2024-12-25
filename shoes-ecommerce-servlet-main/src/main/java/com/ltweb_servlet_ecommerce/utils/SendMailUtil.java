@@ -1089,6 +1089,21 @@ public class SendMailUtil {
         sendMailWithFile(toMail, subject, content.toString(), signContent);
     }
 
+    public static void templateCancelOrderByRevealKey(String username, OrderModel orderModel, String toMail) {
+        StringBuilder content = new StringBuilder();
+        content.append("<p><strong>Xin chào ").append(username).append(",</strong></p>");
+        content.append("<p>Chúng tôi rất tiếc phải thông báo rằng đơn hàng của bạn đã bị hủy do lộ Key bảo mật.</p>");
+        content.append("<p>Mã đơn hàng: <strong>").append(orderModel.getSlug()).append("</strong></p>");
+        content.append("<p>Giá tiền: <strong>").append(orderModel.getTotalAmount()).append(" VNĐ</strong></p>");
+        content.append("<p>Chữ ký: <strong>").append(orderModel.getSign()).append("</strong></p>");
+        content.append("<p>Những đơn hàng sau ngày bị lộ key đều bị hủy.</p>");
+        content.append("<p>Chúng tôi xin lỗi về sự bất tiện này và hy vọng sẽ có cơ hội phục vụ bạn trong tương lai.</p>");
+        content.append("<p>Trân trọng.</p>");
+
+        String subject = "Hủy đơn hàng - Mã đơn hàng " + orderModel.getSlug() + " do lộ Key";
+        sendMail(toMail, subject, content.toString());
+
+    }
 
 
 }
