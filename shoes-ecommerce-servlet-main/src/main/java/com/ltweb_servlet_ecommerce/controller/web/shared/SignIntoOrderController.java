@@ -82,6 +82,7 @@ public class SignIntoOrderController extends HttpServlet {
 
                     OrderModel or = orderService.update(orderModel);
                     System.out.println(or.toString());
+                    //send mail for user confirm order success
                     SendMailUtil.templateConfirmOrder(userModel.getFullName(), orderModel, userModel.getEmail());
 
                     resp.sendRedirect("/success-order/" + orderModel.getSlug());
