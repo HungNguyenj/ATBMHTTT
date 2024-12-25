@@ -16,25 +16,39 @@ public class DownloadKeysController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String typedownload = req.getParameter("typedownload");
         String publickey = req.getParameter("savepublickey");
         String privatekey = req.getParameter("saveprivatekey");
 
         if (publickey.isEmpty() || privatekey.isEmpty()) {
-            resp.sendRedirect(req.getContextPath() + "/digital-signature");
+            resp.sendRedirect(req.getContextPath() + "/manage-key?message=key_not_valid&toast=danger");
         } else {
-            String filename = "keys.txt";
-            String fileContent = "Public key: " + publickey + "\n" + "\n"
-                                + "Private key: " + privatekey;
+            if (typedownload.equals("publickey")) {
+                String filename = "public_key.txt";
+                String fileContent = publickey;
 
-            // Set response header để tải file về máy
-            resp.setContentType("text/plain");
-            resp.setHeader("Content-Disposition", "attachment;filename=" + filename);
+                resp.setContentType("text/plain");
+                resp.setHeader("Content-Disposition", "attachment;filename=" + filename);
 
-            // Ghi nội dung vào file
-            try (ServletOutputStream out = resp.getOutputStream()) {
-                out.write(fileContent.getBytes());
-                out.flush();
+                // Ghi nội dung vào file
+                try (ServletOutputStream out = resp.getOutputStream()) {
+                    out.write(fileContent.getBytes());
+                    out.flush();
+                }
+            } else if (typedownload.equals("privatekey")) {
+                String filename = "private_key.txt";
+                String fileContent = privatekey;
+
+                resp.setContentType("text/plain");
+                resp.setHeader("Content-Disposition", "attachment;filename=" + filename);
+
+                // Ghi nội dung vào file
+                try (ServletOutputStream out = resp.getOutputStream()) {
+                    out.write(fileContent.getBytes());
+                    out.flush();
+                }
             }
+
         }
     }
 }

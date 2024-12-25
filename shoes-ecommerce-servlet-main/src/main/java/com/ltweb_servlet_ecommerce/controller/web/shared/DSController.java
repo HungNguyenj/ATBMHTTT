@@ -11,6 +11,7 @@ import com.ltweb_servlet_ecommerce.utils.SessionUtil;
 import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -39,14 +40,10 @@ public class DSController extends HttpServlet {
         UserModel userModel = (UserModel) SessionUtil.getValue(req, "USER_MODEL");
         if (userModel == null) {
             resp.sendRedirect(req.getContextPath() + "/sign-in");
-        }
-        else {
-            //Sign
+        } else {
+            //Signature
             try {
-
                 dsService = new DSService();
-
-                String email = userModel.getEmail();
 
                 dsService.genKey();
 
@@ -55,6 +52,7 @@ public class DSController extends HttpServlet {
 
                 DSModel dsModel = new DSModel();
                 dsModel.setUser_id(userModel.getId());
+                dsModel.setUsedNow(1);
 
                 DSModel tempModel = dsService.findWithFilter(dsModel);
                 DSModel temp;
@@ -65,26 +63,34 @@ public class DSController extends HttpServlet {
                 if (tempModel == null) {
                     temp = dsService.save(dsModel);
                 } else {
-                    dsModel.setId(tempModel.getId());
-                    temp = dsService.update(dsModel);
+                    tempModel.setUsedNow(2);
+                    tempModel.setExpiredTime(tempModel.getExpiredTime());
+                    tempModel = dsService.update(tempModel);
+
+                    temp = dsService.save(dsModel);
                 }
 
                 System.out.println(temp.toString());
 
-                req.setAttribute("privatekey", privatekey);
-                req.setAttribute("publickey",publickey);
+                // Download private key when creating keys
+                String filename = "private_key.txt";
+                String fileContent = privatekey;
 
-                req.getRequestDispatcher("/views/shared/digital-signature.jsp").forward(req, resp);
+                resp.setContentType("text/plain");
+                resp.setHeader("Content-Disposition", "attachment;filename=" + filename);
 
-            } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
-            } catch (NoSuchProviderException e) {
-                throw new RuntimeException(e);
-            } catch (SQLException e) {
+                try (ServletOutputStream out = resp.getOutputStream()) {
+                    out.write(fileContent.getBytes());
+                    out.flush();
+                }
+
+                // Refresh the page after downloading
+                resp.sendRedirect(req.getContextPath() + "/manage-key");
+
+            } catch (NoSuchAlgorithmException | NoSuchProviderException | SQLException e) {
                 throw new RuntimeException(e);
             }
         }
-
-
     }
+
 }

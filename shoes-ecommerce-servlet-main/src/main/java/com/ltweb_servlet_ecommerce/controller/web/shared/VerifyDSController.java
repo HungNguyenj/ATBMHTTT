@@ -7,14 +7,25 @@ import com.ltweb_servlet_ecommerce.utils.NotifyUtil;
 import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.security.PublicKey;
 
 @WebServlet(urlPatterns = {"/verify-ds"})
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2Mb
+        maxFileSize = 1024 * 1024 * 10, // 10Mb
+        maxRequestSize = 1024 * 1024 * 50 // 50Mb
+)
 public class VerifyDSController extends HttpServlet {
 
     @Inject
@@ -30,32 +41,56 @@ public class VerifyDSController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Verify
-        String signature = req.getParameter("mysignature");
-        String publicKeyStr = req.getParameter("mypublickey");
-        String slug = req.getParameter("slug");
-        String email = req.getParameter("email");
+        try {
 
-        if (signature.isEmpty() || publicKeyStr.isEmpty() || slug.isEmpty() || email.isEmpty()) {
-            resp.sendRedirect(req.getContextPath() + "/verify-ds?message=field_is_blank&toast=danger");
-        } else {
-            boolean isVerified = false;
+            Part signPart = req.getPart("signature");
+            String signContent = readFileContent(signPart);
 
-            try {
-                PublicKey publicKey = KeyUtil.base64ToPublicKey(publicKeyStr);
+            Part publicKeyPart = req.getPart("file-publickey");
+            String publicKeyContent = readFileContent(publicKeyPart);
 
-                dsService.loadPublic(publicKey);
+            System.out.println(signContent);
+            System.out.println(publicKeyContent);
 
-                String mes = email + slug;
-                isVerified = dsService.verify(mes, signature);
+            String slug = req.getParameter("slug");
 
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (signContent.isEmpty() || publicKeyContent.isEmpty() || slug.isEmpty()) {
+                resp.sendRedirect(req.getContextPath() + "/verify-ds?message=field_is_blank&toast=danger");
+            } else {
+                boolean isVerified = false;
+
+                try {
+                    PublicKey publicKey = KeyUtil.base64ToPublicKey(publicKeyContent);
+
+                    dsService.loadPublic(publicKey);
+
+                    String mes = slug;
+                    isVerified = dsService.verify(mes, signContent);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                String verificationResult = isVerified ? "Chữ ký hợp lệ" : "Chữ ký không hợp lệ";
+                req.setAttribute("verifymessage", verificationResult);
+                req.getRequestDispatcher("/views/shared//verify-ds.jsp").forward(req, resp);
             }
+        } catch (Exception ex) {
+        resp.sendRedirect(req.getContextPath() + "/verify-ds?message=key_not_valid&toast=danger");
+    }
 
-            String verificationResult = isVerified ? "Chữ ký hợp lệ" : "Chữ ký không hợp lệ";
-            req.setAttribute("verifymessage", verificationResult);
-            req.getRequestDispatcher("/views/shared//verify-ds.jsp").forward(req, resp);
+
+    }
+
+    private String readFileContent(Part filePart) throws IOException {
+        StringBuilder fileContent = new StringBuilder();
+        try (InputStream inputStream = filePart.getInputStream();
+             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                fileContent.append(line);
+            }
         }
-
+        return fileContent.toString();
     }
 }

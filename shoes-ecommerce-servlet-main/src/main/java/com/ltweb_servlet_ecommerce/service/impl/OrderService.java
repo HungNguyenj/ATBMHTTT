@@ -32,6 +32,9 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<OrderModel> findAllWithFilter(OrderModel model, Pageble pageble) throws SQLException {
+        if (orderDAO == null) {
+            orderDAO = new OrderDAO();
+        }
         return orderDAO.findAllWithFilter(model, pageble);
     }
 
@@ -173,4 +176,5 @@ public class OrderService implements IOrderService {
         }
         return totalPrice;
     }
+
 }

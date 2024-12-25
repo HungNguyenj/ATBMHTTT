@@ -54,6 +54,12 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.4</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/opensymphony/sitemesh -->
         <dependency>
             <groupId>opensymphony</groupId>

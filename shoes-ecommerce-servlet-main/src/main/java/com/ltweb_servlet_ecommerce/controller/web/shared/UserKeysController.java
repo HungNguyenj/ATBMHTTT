@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 @WebServlet(urlPatterns = {"/manage-key"})
 public class UserKeysController extends HttpServlet {
@@ -29,10 +30,20 @@ public class UserKeysController extends HttpServlet {
             try {
                 DSModel temp = new DSModel();
                 temp.setUser_id(userModel.getId());
-                DSModel tempModel = dsService.findWithFilter(temp);
+                List<DSModel> listDS = dsService.findAllWithFilter(temp, null);
+                DSModel dsModel = new DSModel();
+                dsModel.setPublic_key("");
+                dsModel.setPrivate_key("");
+                for (DSModel ds : listDS) {
+                    if (ds.getUsedNow() == 1) {
+                        dsModel = ds;
+                    }
+                }
+                System.out.println(listDS.size());
+                System.out.println(dsModel.toString());
 
                 req.setAttribute("userModel", userModel);
-                req.setAttribute("dsModel", tempModel);
+                req.setAttribute("dsModel", dsModel);
                 RequestDispatcher rd = req.getRequestDispatcher("/views/shared/manage-key.jsp");
                 rd.forward(req, resp);
             } catch (SQLException e) {

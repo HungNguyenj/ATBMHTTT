@@ -6,6 +6,7 @@ import com.ltweb_servlet_ecommerce.model.DSModel;
 import com.ltweb_servlet_ecommerce.model.ProductModel;
 import com.ltweb_servlet_ecommerce.model.RoleModel;
 import com.ltweb_servlet_ecommerce.model.UserModel;
+import com.ltweb_servlet_ecommerce.paging.Pageble;
 import com.ltweb_servlet_ecommerce.service.IDSService;
 
 import javax.inject.Inject;
@@ -16,6 +17,7 @@ import java.security.*;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Base64;
+import java.util.List;
 
 public class DSService implements IDSService {
     KeyPair keyPair;
@@ -152,8 +154,8 @@ public class DSService implements IDSService {
         if (dsDAO == null) {
             dsDAO = new DSDAO();
         }
-        DSModel user = dsDAO.findWithFilter(model);
-        return user;
+        DSModel ds = dsDAO.findWithFilter(model);
+        return ds;
     }
 
     @Override
@@ -161,8 +163,41 @@ public class DSService implements IDSService {
         if (dsDAO == null) {
             dsDAO = new DSDAO();
         }
-        DSModel user = dsDAO.findById(id);
-        return user;
+        DSModel ds = dsDAO.findById(id);
+        return ds;
+    }
+
+    @Override
+    public List<DSModel> findAllWithFilter(DSModel model, Pageble pageble) throws SQLException {
+        if (dsDAO == null) {
+            dsDAO = new DSDAO();
+        }
+        List<DSModel> list = dsDAO.findAllWithFilter(model, pageble);
+        return list;
+    }
+
+    public static void main(String[] args) throws SQLException, NoSuchAlgorithmException, NoSuchProviderException {
+        DSModel model = new DSModel();
+        IDSService dsService = new DSService();
+        IDSDAO dsdao = new DSDAO();
+
+//        model.setUser_id(21L);
+//        model.setUsedNow(1);
+//
+//        model = dsService.findWithFilter(model);
+        model = dsService.findById(23L);
+        System.out.println(model.toString());
+
+        model.setExpiredTime(20);
+        model.setIsReported(2);
+        model = dsService.update(model);
+        System.out.println(model.toString());
+
+//        List<DSModel> list = dsService.findAllWithFilter(model, null);
+//        for (DSModel ds : list) {
+//            System.out.println(ds.toString());
+//        }
+
     }
 
 }
