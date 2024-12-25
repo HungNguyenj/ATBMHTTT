@@ -62,8 +62,8 @@
                     <input type="text" class="form-control" id="slug" name="slug" readonly value="<%=orderModel.getSlug()%>">
                 </div>
                 <div class="form-group">
-                    <label for="privatekey">Private key của bạn</label>
-                    <input type="text" class="form-control" id="privatekey" name="privatekey" readonly value="<%=dsModel.getPrivate_key()%>">
+<%--                    <label for="privatekey">Private key của bạn</label>--%>
+                    <input type="hidden" class="form-control" id="privatekey" name="privatekey" readonly value="<%=dsModel.getPrivate_key()%>">
                 </div>
                 <div class="form-group">
                     <label for="publickey">Public key của bạn</label>

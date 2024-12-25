@@ -61,32 +61,32 @@ public class SignIntoOrderController extends HttpServlet {
                     temp.setUser_id(userModel.getId());
                     temp.setUsedNow(1);
                     DSModel dsModel = dsService.findWithFilter(temp);
-                    System.out.println("ds to sign: " + dsModel.toString());
+                    if (dsModel == null) {
+                        resp.sendRedirect("/success-order/" + orderModel.getSlug());
+                    } else {
+                        PublicKey publicKey = KeyUtil.getInstance().base64ToPublicKey(dsModel.getPublic_key());
+                        PrivateKey privateKey = KeyUtil.getInstance().base64ToPrivateKey(dsModel.getPrivate_key());
 
-//                    if (dsModel.getPublic_key().equals(publickeyStr)
-//                            && dsModel.getPrivate_key().equals(privatekeyStr)) {
-                    PublicKey publicKey = KeyUtil.getInstance().base64ToPublicKey(dsModel.getPublic_key());
-                    PrivateKey privateKey = KeyUtil.getInstance().base64ToPrivateKey(dsModel.getPrivate_key());
+                        String signContent = slug;
 
-                    String signContent = slug;
+                        dsService.loadPublic(publicKey);
+                        dsService.loadPrivate(privateKey);
 
-                    dsService.loadPublic(publicKey);
-                    dsService.loadPrivate(privateKey);
+                        String sign = dsService.sign(signContent);
+                        System.out.println(sign);
 
-                    String sign = dsService.sign(signContent);
-                    System.out.println(sign);
+                        orderModel.setSign(sign);
+                        orderModel.setSignByDSId(dsModel.getId());
+                        orderModel.setVerified(true);
 
-                    orderModel.setSign(sign);
-                    orderModel.setSignByDSId(dsModel.getId());
-                    orderModel.setVerified(true);
+                        OrderModel or = orderService.update(orderModel);
+                        System.out.println(or.toString());
+                        //send mail for user confirm order success
+                        SendMailUtil.templateConfirmOrder(userModel.getFullName(), orderModel, userModel.getEmail());
 
-                    OrderModel or = orderService.update(orderModel);
-                    System.out.println(or.toString());
-                    //send mail for user confirm order success
-                    SendMailUtil.templateConfirmOrder(userModel.getFullName(), orderModel, userModel.getEmail());
+                        resp.sendRedirect("/success-order/" + orderModel.getSlug());
+                    }
 
-                    resp.sendRedirect("/success-order/" + orderModel.getSlug());
-//                    }
                 } else {
                     resp.sendRedirect("/success-order/" + orderModel.getSlug());
                 }

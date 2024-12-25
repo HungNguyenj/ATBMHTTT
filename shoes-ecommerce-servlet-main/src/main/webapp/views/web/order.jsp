@@ -28,6 +28,7 @@
     <div style="padding: 5% 8%;">
         <p>Khách hàng : ${ADDRESS_MODEL.fullName}</p>
         <p>Địa chỉ : ****,${ADDRESS_MODEL.district},${ADDRESS_MODEL.province}</p>
+        <p>Chữ ký : ${ORDER_MODEL.sign==null?"":ORDER_MODEL.sign}</p>
     </div>
     <div class="pricing">
         <c:forEach var="product_item" items="${LIST_PRODUCT}">
