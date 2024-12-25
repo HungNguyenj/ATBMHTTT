@@ -30,15 +30,15 @@
             <p style="margin: 5px 0px; color: #fc1616"> <%= error%> </p>
         </div>
         <div class="card-body">
-            <form class="form" role="form" autocomplete="off" method="post" action="/load-ds">
+            <form class="form" role="form" autocomplete="off" method="post" action="/load-ds" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="publickey">Public key của bạn</label>
-                    <input type="text" class="form-control" id="publickey" name="publickey">
+                    <input type="file" class="form-control" id="publickey" name="publickey">
                 </div>
 
                 <div class="form-group">
                     <label for="privatekey">Private key của bạn</label>
-                    <input type="text" class="form-control" id="privatekey" name="privatekey">
+                    <input type="file" class="form-control" id="privatekey" name="privatekey">
                 </div>
 
                 <div class="form-group mt-3">
@@ -46,8 +46,7 @@
                 </div>
 
             </form>
-            <div><a href="/digital-signature" class="text-body">Tạo mới khóa</a></div>
-            <div><a href="/verify-ds" class="text-body">Xác minh chữ ký</a></div>
+            <div><a href="/manage-key" class="text-body">Quản lý key</a></div>
 <%--            <button type="submit" class="btn btn-success btn-lg float-right">Private key</button>--%>
 <%--            <button type="submit" class="btn btn-success btn-lg float-right">Public key</button>--%>
         </div>

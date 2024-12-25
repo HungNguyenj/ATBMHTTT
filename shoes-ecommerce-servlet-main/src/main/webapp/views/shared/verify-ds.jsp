@@ -64,8 +64,8 @@
                     >
                 </div>
             </form>
-            <div><a href="/digital-signature" class="text-body">Tạo mới khóa</a></div>
-            <div><a href="/load-ds" class="text-body">Tải lên khóa</a></div>
+            <div><a href="/manage-key" class="text-body">Quản lý key</a></div>
+
 <%--            <button type="submit" class="btn btn-success btn-lg float-right">Private key</button>--%>
 <%--            <button type="submit" class="btn btn-success btn-lg float-right">Public key</button>--%>
         </div>
